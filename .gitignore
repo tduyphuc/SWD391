@@ -19,4 +19,4 @@
 *.rar
 
 #Folder
-/build
+**/build/
