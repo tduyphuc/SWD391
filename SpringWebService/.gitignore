@@ -20,3 +20,5 @@
 
 #Folder
 **/build/
+/build/
+*/build/
