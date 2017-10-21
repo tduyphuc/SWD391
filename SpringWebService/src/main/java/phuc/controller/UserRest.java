@@ -1,37 +1,45 @@
 package phuc.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import phuc.controller.service.user.IAuthenService;
 import phuc.controller.service.user.IProfileService;
 import phuc.entity.Customer;
+import phuc.utils.IJSonHelper;
+import phuc.utils.ResponseCode;
 
 @RestController
 @RequestMapping(value="user")
 public class UserRest {
+	
 	@Autowired
 	private IAuthenService authen;
 	
 	@Autowired
 	private IProfileService regist;
 	
+	@Autowired
+	private IJSonHelper json;
+	
 	@RequestMapping(value = "/login", 
-			method = RequestMethod.POST)
-	public String login(@RequestParam(value="id") String id,
-						@RequestParam(value="password") String password){
-		
-		String s = "WRONG USER";
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String login(@RequestBody MultiValueMap<String, String> params){
+		String id = params.getFirst("id");
+		String password = params.getFirst("password");
 		if(authen.validateUser(id, password)){
-			s = "User OK";
+			Map<String, String> map = regist.getUserInfo(id);
+			return json.toResponseMessage(ResponseCode.OK_CODE, json.convertToJson(map));
 		}
-		return s;		
+		return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "DENIED");		
 		
 	}
 	
@@ -67,10 +75,16 @@ public class UserRest {
 	public String regist(@RequestBody MultiValueMap<String, String> params) {
 		String id = params.getFirst("id");
 		if(regist.checkExistUser(id)){
-			return "Exist !!!";
+			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "DENIED: EXIST !!!");
 		}
 		boolean result = regist.registUser(createCustomerFromMap(params));
-		return "RESULT: " + result;		
+		if(result){
+			return json.toResponseMessage(ResponseCode.OK_CODE, "REGIST OK");	
+		}
+		else{
+			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "REGIST FAILED");
+		}
+				
 	}
 	
 	@RequestMapping(value = "/update", 
@@ -79,9 +93,22 @@ public class UserRest {
 	public String update(@RequestBody MultiValueMap<String, String> params) {
 		String id = params.getFirst("id");
 		if(!regist.checkExistUser(id)){
-			return "This user not exist !!!";
+			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "THIS USER NOT EXIST !!!");
 		}
 		boolean result = regist.updateProfile(createCustomerFromMap(params));
-		return "UPDATE: " + result;		
+		if(result){
+			return json.toResponseMessage(ResponseCode.OK_CODE, "UPDATE OK");	
+		}
+		else{
+			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "UPDATE FAILED");
+		}	
+	}
+	
+	@RequestMapping(value = "/history", 
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String getHistory(@RequestBody MultiValueMap<String, String> params){
+		String id = params.getFirst("id");
+		return json.convertToJson(regist.getUserHistory(id));				
 	}
 }

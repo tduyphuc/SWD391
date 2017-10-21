@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import phuc.controller.repo.IBookingDetailRepo;
 import phuc.controller.repo.IBookingRepo;
@@ -17,6 +18,7 @@ import phuc.entity.Customer;
 import phuc.entity.RoomType;
 import phuc.entity.TblBookingDetailsId;
 
+@Service
 public class BookingService implements IBooking {
 
 	@Autowired

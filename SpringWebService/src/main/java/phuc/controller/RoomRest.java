@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import phuc.controller.service.room.IRoomInfo;
+import phuc.utils.IJSonHelper;
+import phuc.utils.ResponseCode;
 
 @RestController
 @RequestMapping(value="room")
@@ -14,6 +16,9 @@ public class RoomRest {
 	
 	@Autowired
 	private IRoomInfo roomInfo;
+	
+	@Autowired
+	private IJSonHelper json;
 	
 	@RequestMapping(value = "/getAll", 
 			method = RequestMethod.GET)
@@ -26,7 +31,15 @@ public class RoomRest {
 			method = RequestMethod.GET)
 	public String getAvailable(@RequestParam(value="typeId") String typeId){		
 		Integer result = roomInfo.getAvailableRoom(Integer.valueOf(typeId));
-		String mes = "Type: " + typeId + ", available: " + result;
+		String mes = json.toResponseMessage(ResponseCode.OK_CODE, result + "");
  		return mes;		
 	}
+	
+	@RequestMapping(value = "/getServices", 
+			method = RequestMethod.GET)
+	public String getRoomService(@RequestParam(value="typeId") String typeId){		
+		String result = roomInfo.getAllService(typeId);
+		return result;		
+	}
+	
 }

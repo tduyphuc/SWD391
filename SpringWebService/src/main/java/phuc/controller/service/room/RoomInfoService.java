@@ -14,6 +14,7 @@ import phuc.controller.repo.IRoomRepo;
 import phuc.entity.Room;
 import phuc.entity.RoomType;
 import phuc.utils.IJSonHelper;
+import phuc.utils.ResponseCode;
 
 @Service
 public class RoomInfoService implements IRoomInfo {
@@ -60,6 +61,37 @@ public class RoomInfoService implements IRoomInfo {
 			}
 		}
 		return available;
+	}
+
+	@Override
+	public Double getTotalPrice(Map<Integer, Integer> details) {
+		Double total = 0.00;
+		for(Integer key : details.keySet()){
+			RoomType type = repo.getRoomType(key);
+			total += type.getPricePerNight() * details.get(key);
+		}
+		return total;
+	}
+
+	@Override
+	public String getAllService(String typeId) {
+		Set<phuc.entity.Service> services = repo.getServices(Integer.valueOf(typeId));
+		if(services == null){
+			return jsonHelper.toResponseMessage(ResponseCode.ERROR_CODE_NOT_FOUND, "NO SERVICE FOUND");
+		}
+		String json = getServiceMap(services);
+		return json;
+	}
+	
+	private String getServiceMap(Set<phuc.entity.Service> services){
+		List<Map<String, String>> maps = new LinkedList<Map<String, String>>();
+		for(phuc.entity.Service service : services){
+			Map<String, String> map = new HashMap<>();
+			map.put("name", service.getServiceName());
+			map.put("description", service.getDescription());
+			maps.add(map);
+		}
+		return jsonHelper.convertToJson(maps);
 	}
 
 }

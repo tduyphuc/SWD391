@@ -35,6 +35,7 @@ public class Booking implements java.io.Serializable {
 	private int numberOfPerson;
 	private Date arrivalDay;
 	private Date checkOutDay;
+	private Date bookingDay;
 	private String comment;
 	private Set<BookingDetails> tblBookingDetailses = new HashSet<BookingDetails>(0);
 	private Payment payment;
@@ -42,20 +43,22 @@ public class Booking implements java.io.Serializable {
 	public Booking() {
 	}
 
-	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, String comment) {
+	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment) {
 		this.customer = customer;
 		this.numberOfPerson = numberOfPerson;
 		this.arrivalDay = arrivalDay;
 		this.checkOutDay = checkOutDay;
+		this.bookingDay = bookingDay;
 		this.comment = comment;
 	}
 
-	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, String comment,
+	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment,
 			Set<BookingDetails> tblBookingDetailses, Payment payment) {
 		this.customer = customer;
 		this.numberOfPerson = numberOfPerson;
 		this.arrivalDay = arrivalDay;
 		this.checkOutDay = checkOutDay;
+		this.bookingDay = bookingDay;
 		this.comment = comment;
 		this.tblBookingDetailses = tblBookingDetailses;
 		this.payment = payment;
@@ -110,6 +113,16 @@ public class Booking implements java.io.Serializable {
 
 	public void setCheckOutDay(Date checkOutDay) {
 		this.checkOutDay = checkOutDay;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "bookingDay", nullable = false, length = 19)
+	public Date getBookingDay() {
+		return this.bookingDay;
+	}
+
+	public void setBookingDay(Date bookingDay) {
+		this.bookingDay = bookingDay;
 	}
 
 	@Column(name = "comment", nullable = false, length = 300)

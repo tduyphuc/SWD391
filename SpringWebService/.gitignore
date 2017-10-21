@@ -19,6 +19,7 @@
 *.rar
 
 #Folder
-**/build/
-/build/
-*/build/
+build/
+.gradle/
+.setting/
+
