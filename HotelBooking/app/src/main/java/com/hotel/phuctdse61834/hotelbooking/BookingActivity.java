@@ -32,10 +32,12 @@ public class BookingActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener checkOut_listener;
     private TextView txt_arrival;
     private TextView txt_checkOut;
+    private TextView txt_total_price;
     private Spinner spinner_person;
     private Spinner spinner_amount;
     private SimpleDateFormat sdf;
     private List<String> errors;
+    private Double pricePerNight;
 
 
     @Override
@@ -48,6 +50,8 @@ public class BookingActivity extends AppCompatActivity {
         mapData = gson.fromJson(data, HashMap.class);
         sdf = new SimpleDateFormat("dd-mm-yyyy");
         errors = new LinkedList<>();
+        pricePerNight = Double.valueOf(mapData.get("pricePerNight"));
+        txt_total_price = (TextView) findViewById(R.id.txt_total_price);
 
         final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         final int month = Calendar.getInstance().get(Calendar.MONTH);
@@ -90,7 +94,7 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
         ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
+        for (int i = 1; i < 12; i++){
             list.add(i);
         }
         spinner_person = (Spinner) findViewById(R.id.spinner_person);
@@ -98,11 +102,22 @@ public class BookingActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_person.setAdapter(adapter);
 
-
         spinner_amount = (Spinner) findViewById(R.id.spinner_amount);
         ArrayAdapter<Integer> amount_adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, list);
         amount_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_amount.setAdapter(amount_adapter);
+        spinner_amount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Integer select_amount = Integer.valueOf(parent.getSelectedItem().toString());
+                txt_total_price.setText("$" + (select_amount * pricePerNight));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Button btn_pay = (Button) findViewById(R.id.btn_pay);
         btn_pay.setOnClickListener(new View.OnClickListener() {
@@ -121,14 +136,23 @@ public class BookingActivity extends AppCompatActivity {
         errors.clear();
         // validate date
         try {
+            final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            final int month = Calendar.getInstance().get(Calendar.MONTH);
+            final int year = Calendar.getInstance().get(Calendar.YEAR);
+            String day_txt = day + "-" + month + "-" + year;
+            Date now = sdf.parse(day_txt);
             Date arrival = sdf.parse(txt_arrival.getText().toString());
             Date checkOut = sdf.parse(txt_checkOut.getText().toString());
             long gap = checkOut.getTime() - arrival.getTime();
             long oneDayGap = 1000 * 3600 * 24;
             Log.d("VALIDATE", "Gap: " + gap);
+            if((arrival.getTime() - now.getTime()) < oneDayGap){
+                valid = false;
+                errors.add("You must booking before 1 day");
+            }
             if(gap < oneDayGap){
                 valid = false;
-                errors.add("CheckOut at least one day");
+                errors.add("CheckOut after arrival at least one day");
             }
         } catch (ParseException e) {
             Log.d("BookingActivity", "ParseException: " + e.getMessage());
