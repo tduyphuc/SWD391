@@ -19,7 +19,7 @@
 *.rar
 
 #Folder
+.gradle
 build/
 .gradle/
 .setting/
-

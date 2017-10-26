@@ -48,13 +48,13 @@ public class BookingActivity extends AppCompatActivity {
         String data = getIntent().getStringExtra("DATA");
         Gson gson = new Gson();
         mapData = gson.fromJson(data, HashMap.class);
-        sdf = new SimpleDateFormat("dd-mm-yyyy");
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
         errors = new LinkedList<>();
         pricePerNight = Double.valueOf(mapData.get("pricePerNight"));
         txt_total_price = (TextView) findViewById(R.id.txt_total_price);
 
         final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        final int month = Calendar.getInstance().get(Calendar.MONTH);
+        final int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
         final int year = Calendar.getInstance().get(Calendar.YEAR);
         String day_txt = day + "-" + month + "-" + year;
         txt_arrival = (TextView) findViewById(R.id.txt_arrival_day);
@@ -62,7 +62,7 @@ public class BookingActivity extends AppCompatActivity {
         arrival_listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                txt_arrival.setText(dayOfMonth + "-" + month + "-" + year);
+                txt_arrival.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
             }
         };
         txt_arrival.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class BookingActivity extends AppCompatActivity {
         checkOut_listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                txt_checkOut.setText(dayOfMonth + "-" + month + "-" + year);
+                txt_checkOut.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
             }
         };
         txt_checkOut.setOnClickListener(new View.OnClickListener() {
@@ -124,11 +124,18 @@ public class BookingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean result = validateInput();
-                if(!result){
+                if(result){
+                    pay();
+                }
+                else {
                     Toast.makeText(BookingActivity.this, errors.get(0), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void pay(){
+        
     }
 
     private boolean validateInput(){
@@ -137,7 +144,7 @@ public class BookingActivity extends AppCompatActivity {
         // validate date
         try {
             final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            final int month = Calendar.getInstance().get(Calendar.MONTH);
+            final int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
             final int year = Calendar.getInstance().get(Calendar.YEAR);
             String day_txt = day + "-" + month + "-" + year;
             Date now = sdf.parse(day_txt);

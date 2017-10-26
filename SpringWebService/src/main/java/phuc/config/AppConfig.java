@@ -9,17 +9,17 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import phuc.utils.DateHelper;
+import phuc.utils.IDateHelper;
 import phuc.utils.IJSonHelper;
 import phuc.utils.JSonHelper;
 
@@ -28,6 +28,7 @@ import phuc.utils.JSonHelper;
 //@EnableJpaRepositories(basePackages = "phuc.entity")
 @EnableTransactionManagement
 public class AppConfig {
+	
 	 @Bean
 	 public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -37,6 +38,7 @@ public class AppConfig {
 		ds.setPassword("12345678x@X");
 	    return ds;
 	 }
+	 
 	 @Bean
 	 public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
 	    LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
@@ -81,4 +83,10 @@ public class AppConfig {
      public IJSonHelper getJsonHelper(){
     	 return new JSonHelper();
      }
+     
+     @Bean
+     public IDateHelper getDateHelper(){
+    	 return new DateHelper();
+     }
+     
 }
