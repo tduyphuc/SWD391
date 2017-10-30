@@ -2,6 +2,7 @@ package com.hotel.phuctdse61834.hotelbooking;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -53,14 +55,25 @@ public class RoomDetailActivity extends AppCompatActivity {
         btn_booking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RoomDetailActivity.this, BookingActivity.class);
-                intent.putExtra("DATA", gson.toJson(mapData));
-                startActivity(intent);
+                if(checkHadLogin()){
+                    Intent intent = new Intent(RoomDetailActivity.this, BookingActivity.class);
+                    intent.putExtra("DATA", gson.toJson(mapData));
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(RoomDetailActivity.this, "Please login to book", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         new LoadAvailableTask().execute();
         new LoadServicesTask().execute();
 
+    }
+
+    private boolean checkHadLogin(){
+        SharedPreferences preferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
+        String username = preferences.getString("Name", "");
+        return !username.equals("");
     }
 
     private void prepareUI(){

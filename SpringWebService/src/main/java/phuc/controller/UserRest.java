@@ -75,7 +75,7 @@ public class UserRest {
 	public String regist(@RequestBody MultiValueMap<String, String> params) {
 		String id = params.getFirst("id");
 		if(regist.checkExistUser(id)){
-			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "DENIED: EXIST !!!");
+			return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "This user has EXISTED !!!");
 		}
 		boolean result = regist.registUser(createCustomerFromMap(params));
 		if(result){
@@ -111,4 +111,5 @@ public class UserRest {
 		String id = params.getFirst("id");
 		return json.convertToJson(regist.getUserHistory(id));				
 	}
+	
 }

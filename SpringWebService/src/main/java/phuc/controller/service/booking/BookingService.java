@@ -100,13 +100,12 @@ public class BookingService implements IBooking {
 	private Payment createPayment(Booking booking, MultiValueMap<String, String> params, Map<Integer, Integer> details){
 		Payment payment = new Payment();
 		Date payTime = dateHelper.getCurrentDayToSecond();
-		Double paid = Double.valueOf(params.getFirst("paid"));
 		Double amount = roomInfo.getTotalPrice(details);
 		PaymentType paymentType = typeRepo.getPaymentType(Integer.valueOf(params.getFirst("paymentType")));
 		
 		payment.setTblBooking(booking);
 		payment.setPayTime(payTime);
-		payment.setPaid(paid);
+		payment.setPaid(amount);
 		payment.setAmount(amount);
 		payment.setTblPaymentType(paymentType);
 		
@@ -127,7 +126,7 @@ public class BookingService implements IBooking {
 		if(booking != null && details != null || !details.isEmpty()){
 			System.out.println("CHECKING");
 			boolean checkValidDay = checkValidDay(booking.getArrivalDay(), booking.getCheckOutDay(), booking.getBookingDay());
-			boolean checkEnoughCapacity = checkEnoughCapacity(booking.getNumberOfPerson(), details);
+			boolean checkEnoughCapacity = checkEnoughCapacity(booking.getAdult(), booking.getChild(), details);
 			boolean checkEnoughRoom = checkEnoughRoom(details);
 			System.out.println("checkValidDay: " + checkValidDay);
 			System.out.println("checkEnoughCapacity: " + checkEnoughCapacity);
@@ -144,13 +143,14 @@ public class BookingService implements IBooking {
 		return (stay >= oneDayGap) && (bookBefore >= oneDayGap);
 	}
 	
-	private boolean checkEnoughCapacity(int numOfPerson, Map<Integer, Integer> details){
-		if(numOfPerson > 0){
+	private boolean checkEnoughCapacity(int adult, int child, Map<Integer, Integer> details){
+		if(adult > 0){
 			int capacity = 0;
-			for(Integer key : details.keySet()){
-				capacity += details.get(key);
+			for(Entry<Integer, Integer> entry : details.entrySet()){
+				RoomType type = roomRepo.getRoomType(entry.getKey());
+				capacity += entry.getValue() * type.getCapacity();
 			}
-			return numOfPerson <= capacity;
+			return adult <= capacity && child <= 2 * capacity;
 		}
 		return false;
 	}

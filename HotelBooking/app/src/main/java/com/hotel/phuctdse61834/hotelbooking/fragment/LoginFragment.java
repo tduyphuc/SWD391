@@ -1,7 +1,8 @@
-package com.hotel.phuctdse61834.hotelbooking;
+package com.hotel.phuctdse61834.hotelbooking.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.hotel.phuctdse61834.hotelbooking.R;
+import com.hotel.phuctdse61834.hotelbooking.RegistActivity;
 import com.hotel.phuctdse61834.hotelbooking.request.Requester;
 import com.hotel.phuctdse61834.hotelbooking.request.ResponseCode;
 import com.squareup.okhttp.Response;
@@ -58,6 +61,14 @@ public class LoginFragment extends CustomFragment {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                 new LoginTask().execute(requestBody);
+            }
+        });
+        TextView txt_regist = (TextView) getView().findViewById(R.id.txt_regist);
+        txt_regist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), RegistActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -136,4 +147,5 @@ public class LoginFragment extends CustomFragment {
         }
 
     }
+
 }

@@ -32,7 +32,8 @@ public class Booking implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer bookingId;
 	private Customer customer;
-	private int numberOfPerson;
+	private int adult;
+	private int child;
 	private Date arrivalDay;
 	private Date checkOutDay;
 	private Date bookingDay;
@@ -43,19 +44,21 @@ public class Booking implements java.io.Serializable {
 	public Booking() {
 	}
 
-	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment) {
+	public Booking(Customer customer, int adult, int child, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment) {
 		this.customer = customer;
-		this.numberOfPerson = numberOfPerson;
+		this.adult = adult;
+		this.child = child;
 		this.arrivalDay = arrivalDay;
 		this.checkOutDay = checkOutDay;
 		this.bookingDay = bookingDay;
 		this.comment = comment;
 	}
 
-	public Booking(Customer customer, int numberOfPerson, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment,
+	public Booking(Customer customer, int adult, int child, Date arrivalDay, Date checkOutDay, Date bookingDay, String comment,
 			Set<BookingDetails> tblBookingDetailses, Payment payment) {
 		this.customer = customer;
-		this.numberOfPerson = numberOfPerson;
+		this.adult = adult;
+		this.child = child;
 		this.arrivalDay = arrivalDay;
 		this.checkOutDay = checkOutDay;
 		this.bookingDay = bookingDay;
@@ -85,14 +88,23 @@ public class Booking implements java.io.Serializable {
 	public void setTblCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
-	@Column(name = "numberOfPerson", nullable = false)
-	public int getNumberOfPerson() {
-		return this.numberOfPerson;
+	
+	@Column(name = "adult", nullable = false)
+	public int getAdult() {
+		return this.adult;
 	}
 
-	public void setNumberOfPerson(int numberOfPerson) {
-		this.numberOfPerson = numberOfPerson;
+	public void setAdult(int adult) {
+		this.adult = adult;
+	}
+	
+	@Column(name = "child", nullable = false)
+	public int getChild() {
+		return this.child;
+	}
+
+	public void setChild(int child) {
+		this.child = child;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

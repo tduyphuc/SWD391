@@ -40,4 +40,9 @@ public class DateHelper implements IDateHelper {
 		return Calendar.getInstance().getTime();
 	}
 
+	@Override
+	public String formatDate(Date date) {
+		return sdf.format(date);
+	}
+
 }

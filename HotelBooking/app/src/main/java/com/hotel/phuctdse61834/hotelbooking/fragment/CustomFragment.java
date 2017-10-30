@@ -1,6 +1,8 @@
-package com.hotel.phuctdse61834.hotelbooking;
+package com.hotel.phuctdse61834.hotelbooking.fragment;
 
 import android.support.v4.app.Fragment;
+
+import com.hotel.phuctdse61834.hotelbooking.IResetable;
 
 /**
  * Created by johntran on 10/19/17.

@@ -1,16 +1,16 @@
-package com.hotel.phuctdse61834.hotelbooking;
+package com.hotel.phuctdse61834.hotelbooking.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.hotel.phuctdse61834.hotelbooking.R;
 
 /**
  * Created by johntran on 10/18/17.

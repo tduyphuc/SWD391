@@ -22,9 +22,12 @@
         <activity android:name=".RoomDetailActivity" />
         <activity
             android:name=".BookingActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RegistActivity"
             android:windowSoftInputMode="stateHidden">
-
         </activity>
+        <activity android:name=".HistoryDetailActivity"></activity>
     </application>
 
 </manifest>

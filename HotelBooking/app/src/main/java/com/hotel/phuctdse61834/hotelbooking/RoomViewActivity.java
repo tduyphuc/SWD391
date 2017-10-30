@@ -2,7 +2,6 @@ package com.hotel.phuctdse61834.hotelbooking;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.hotel.phuctdse61834.hotelbooking.fragment.CustomFragment;
 
 
 public class RoomViewActivity extends AppCompatActivity implements IResetable{

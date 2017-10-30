@@ -62,28 +62,28 @@
             android:layout_height="match_parent"
             android:id="@+id/room_fragment"
             tools:layout="@layout/room_view_fragment"
-            class="com.hotel.phuctdse61834.hotelbooking.RoomViewFragment"/>
+            class="com.hotel.phuctdse61834.hotelbooking.fragment.RoomViewFragment"/>
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/user_fragment"
             tools:layout="@layout/user_fragment_layout"
-            class="com.hotel.phuctdse61834.hotelbooking.UserFragment"/>
+            class="com.hotel.phuctdse61834.hotelbooking.fragment.UserFragment"/>
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/history_fragment"
             tools:layout="@layout/history_fragment_layout"
-            class="com.hotel.phuctdse61834.hotelbooking.HistoryFragment"/>
+            class="com.hotel.phuctdse61834.hotelbooking.fragment.HistoryFragment"/>
 
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/login_fragment"
             tools:layout="@layout/fragment_login"
-            class="com.hotel.phuctdse61834.hotelbooking.LoginFragment"/>
+            class="com.hotel.phuctdse61834.hotelbooking.fragment.LoginFragment"/>
 
     </FrameLayout>
 

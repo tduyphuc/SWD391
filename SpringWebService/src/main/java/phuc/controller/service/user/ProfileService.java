@@ -1,6 +1,5 @@
 package phuc.controller.service.user;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import phuc.controller.repo.ICustomerRepo;
 import phuc.entity.Booking;
 import phuc.entity.BookingDetails;
 import phuc.entity.Customer;
+import phuc.utils.IDateHelper;
 import phuc.utils.IJSonHelper;
 
 @Service
@@ -27,6 +27,9 @@ public class ProfileService implements IProfileService {
 	
 	@Autowired
 	private IJSonHelper json;
+	
+	@Autowired
+	private IDateHelper dateHelper;
 	
 	@Override
 	public boolean checkExistUser(String id) {
@@ -76,17 +79,17 @@ public class ProfileService implements IProfileService {
 
 	@Override
 	public List<Map<String, String>> getUserHistory(String id) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 		Customer cus = repo.getCustomer(id);
 		List<Map<String, String>> historyList = new ArrayList<>();
 		Set<Booking> bookings = cus.getTblBookings();
 		for(Booking booking : bookings){
 			Map<String, String> history = new HashMap<>();
-			history.put("numberOfPerson", String.valueOf(booking.getNumberOfPerson()));
+			history.put("adult", String.valueOf(booking.getAdult()));
+			history.put("child", String.valueOf(booking.getChild()));
 			history.put("comment", booking.getComment());
-			history.put("arrivalDay", sdf.format(booking.getArrivalDay()));
-			history.put("checkOutDay", sdf.format(booking.getCheckOutDay()));
-			history.put("bookingDay", sdf.format(booking.getBookingDay()));
+			history.put("arrivalDay", dateHelper.formatDate(booking.getArrivalDay()));
+			history.put("checkOutDay", dateHelper.formatDate(booking.getCheckOutDay()));
+			history.put("bookingDay", dateHelper.formatDate(booking.getBookingDay()));
 			Map<String, String> details = new HashMap<>();
 			for(BookingDetails detail : booking.getTblBookingDetailses()){
 				details.put(detail.getTblRoomType().getName(), detail.getAmount() + "");

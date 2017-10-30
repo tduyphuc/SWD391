@@ -44,13 +44,17 @@ public class BookingRest {
 	
 	private Booking createBooking(MultiValueMap<String, String> params){
 		Booking booking = new Booking();
-		Integer numberOfPerson = Integer.valueOf(params.getFirst("numberOfPerson"));
+		System.out.println("Adult: " + params.getFirst("adult"));
+		System.out.println("Child: " + params.getFirst("child"));
+		Integer adult = Integer.valueOf(params.getFirst("adult"));
+		Integer child = Integer.valueOf(params.getFirst("child"));
 		Date arrivalDay = dateHelper.convertToDate(params.getFirst("arrivalDay"));
 		Date checkOutDay = dateHelper.convertToDate(params.getFirst("checkOutDay"));
 		Date bookingDay = dateHelper.getCurrentDay();
 		String comment = params.getFirst("comment");
 		
-		booking.setNumberOfPerson(numberOfPerson);
+		booking.setAdult(adult);
+		booking.setChild(child);
 		booking.setArrivalDay(arrivalDay);
 		booking.setCheckOutDay(checkOutDay);
 		booking.setComment(comment);
