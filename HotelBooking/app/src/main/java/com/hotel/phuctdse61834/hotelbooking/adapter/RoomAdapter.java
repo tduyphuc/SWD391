@@ -16,9 +16,6 @@ import java.util.Map;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-/**
- * Created by johntran on 10/16/17.
- */
 
 public class RoomAdapter extends BaseAdapter {
     private Context mContext;

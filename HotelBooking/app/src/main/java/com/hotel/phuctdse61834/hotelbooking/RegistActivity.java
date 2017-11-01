@@ -1,6 +1,8 @@
 package com.hotel.phuctdse61834.hotelbooking;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,8 +40,9 @@ public class RegistActivity extends AppCompatActivity {
     private TextView txt_email;
     private TextView txt_address;
     private TextView txt_postal;
-    private Spinner spinner_country;
+    private TextView txt_country;
     private Button btn_regist;
+    private String[] countries;
 
     private static final String USER_NAME_PATTERN = "[a-zA-Z0-9]{1,20}";
     private static final String NAME_PATTERN = "[a-zA-Z0-9]{1,20}";
@@ -60,18 +63,29 @@ public class RegistActivity extends AppCompatActivity {
         txt_email = (TextView) findViewById(R.id.txt_regist_email);
         txt_address = (TextView) findViewById(R.id.txt_regist_address);
         txt_postal = (TextView) findViewById(R.id.txt_regist_postal);
-        spinner_country = (Spinner) findViewById(R.id.spinner_country);
+        txt_country = (TextView) findViewById(R.id.txt_country);
         btn_regist = (Button) findViewById(R.id.btn_regist);
 
-        String[] countries = getResources().getStringArray(R.array.countries);
-        ArrayList<String> countries_list = new ArrayList<String>();
-        for (int i = 0; i < countries.length; i++){
-            countries_list.add(countries[i]);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, countries_list);
+        countries = getResources().getStringArray(R.array.countries);
+        txt_country.setText(countries[0]);
+        txt_country.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(RegistActivity.this);
+                b.setTitle("Room amount");
+                b.setItems(countries, new DialogInterface.OnClickListener() {
 
-        spinner_country.setAdapter(adapter);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        txt_country.setText(countries[which]);
+                    }
+
+                });
+
+                b.show();
+            }
+        });
 
         btn_regist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +107,7 @@ public class RegistActivity extends AppCompatActivity {
         String email = txt_email.getText().toString();
         String postal = txt_postal.getText().toString();
         String address = txt_address.getText().toString();
-        String country = spinner_country.getSelectedItem().toString();
+        String country = txt_country.getText().toString();
         params.put("id", username);
         params.put("password", password);
         params.put("firstName", firstName);
@@ -117,7 +131,7 @@ public class RegistActivity extends AppCompatActivity {
         txt_email.setText("");
         txt_address.setText("");
         txt_postal.setText("");
-        spinner_country.setSelection(0);
+        txt_country.setText(countries[0]);
     }
 
     private boolean validInfo(){
@@ -231,6 +245,7 @@ public class RegistActivity extends AppCompatActivity {
             paths.add("user");
             paths.add("regist");
             gson = new Gson();
+            err_message = "Unexpected error";
         }
 
         @Override

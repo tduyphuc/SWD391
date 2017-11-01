@@ -7,7 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import phuc.entity.Room;
 import phuc.entity.RoomType;
 import phuc.entity.Service;
 
@@ -37,6 +39,24 @@ public class RoomRepo implements IRoomRepo {
 			return services;
 		}
 		return null;
+	}
+
+	@Override
+	public Collection<Room> selectAllRoom() {
+		Collection<Room> list = entityManager.createQuery("SELECT r FROM Room r", Room.class).getResultList();
+		return list;
+	}
+
+	@Override
+	public Room getRoom(Integer roomId) {
+		Room room = entityManager.find(Room.class, roomId);
+		return room;
+	}
+
+	@Override
+	@Transactional
+	public void updateRoom(Room room) {
+		entityManager.merge(room);	
 	}
 
 }

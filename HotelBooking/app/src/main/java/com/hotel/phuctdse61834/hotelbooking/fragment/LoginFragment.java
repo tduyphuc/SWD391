@@ -29,9 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by johntran on 10/19/17.
- */
 
 public class LoginFragment extends CustomFragment {
 
@@ -140,6 +137,7 @@ public class LoginFragment extends CustomFragment {
         protected void onPostExecute(Boolean result) {
             if(result){
                 resetable.resetThis();
+                Toast.makeText(getContext(), "Login success", Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
             }

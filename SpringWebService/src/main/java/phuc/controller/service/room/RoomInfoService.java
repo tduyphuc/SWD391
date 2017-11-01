@@ -1,14 +1,18 @@
 package phuc.controller.service.room;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
 
 import phuc.controller.repo.IRoomRepo;
 import phuc.entity.Room;
@@ -92,6 +96,32 @@ public class RoomInfoService implements IRoomInfo {
 			maps.add(map);
 		}
 		return jsonHelper.convertToJson(maps);
+	}
+
+	@Override
+	public String getAllRooms() {
+		List<Map<String, String>> roomList = new ArrayList<>();
+		Collection<Room> list = repo.selectAllRoom();
+		for(Room r : list){
+			Map<String, String> map = new HashMap<>();
+			map.put("roomId", String.valueOf(r.getRoomId()));
+			map.put("roomType", r.getTblRoomType().getName());
+			map.put("available", String.valueOf(r.isIsAvailable()));
+			
+			roomList.add(map);
+		}
+		return jsonHelper.convertToJson(roomList);
+	}
+
+	@Override
+	public void updateAllRooms(String body) {
+		Gson gson = new Gson();
+		Map<String, String> map = gson.fromJson(body, HashMap.class);		
+		for(Entry<String, String> entry : map.entrySet()){
+			Room room = repo.getRoom(Integer.valueOf(entry.getKey()));
+			room.setIsAvailable(Boolean.valueOf(entry.getValue()));
+			repo.updateRoom(room);
+		}		
 	}
 
 }

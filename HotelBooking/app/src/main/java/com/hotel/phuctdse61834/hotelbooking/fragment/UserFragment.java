@@ -9,12 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hotel.phuctdse61834.hotelbooking.R;
 
-/**
- * Created by johntran on 10/18/17.
- */
 
 public class UserFragment extends CustomFragment {
 
@@ -76,6 +74,7 @@ public class UserFragment extends CustomFragment {
             public void onClick(View v) {
                 clearPref();
                 resetable.resetThis();
+                Toast.makeText(getContext(), "Log out !!!", Toast.LENGTH_SHORT).show();
             }
         });
         linearLayout.addView(item_logout);

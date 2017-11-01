@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_room_edit_roomId"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".3"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:text="xxx"/>
+    <TextView
+        android:id="@+id/txt_room_edit_roomType"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".5"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:text="ABC"/>
+    <CheckBox
+        android:id="@+id/checkbox_room_edit_available"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2"
+        />
+
+</LinearLayout>

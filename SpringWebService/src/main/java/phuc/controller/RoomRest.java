@@ -1,6 +1,7 @@
 package phuc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,19 @@ public class RoomRest {
 	public String getRoomService(@RequestParam(value="typeId") String typeId){		
 		String result = roomInfo.getAllService(typeId);
 		return result;		
+	}
+	
+	@RequestMapping(value = "/getAllRooms", 
+			method = RequestMethod.GET)
+	public String getAllRooms(){	
+		return roomInfo.getAllRooms();		
+	}
+	
+	@RequestMapping(value = "/updateRooms", 
+			method = RequestMethod.POST)
+	public String updateRooms(@RequestBody String roomMap){	
+		roomInfo.updateAllRooms(roomMap);
+		return "OK";
 	}
 	
 }

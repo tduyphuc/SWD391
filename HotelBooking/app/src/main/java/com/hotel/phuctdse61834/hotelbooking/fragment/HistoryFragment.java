@@ -28,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by johntran on 10/18/17.
- */
 
 public class HistoryFragment extends CustomFragment {
 

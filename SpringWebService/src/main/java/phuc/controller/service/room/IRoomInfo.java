@@ -7,4 +7,6 @@ public interface IRoomInfo {
 	public Integer getAvailableRoom(Integer typeID);
 	public Double getTotalPrice(Map<Integer, Integer> details);
 	public String getAllService(String typeId);
+	public String getAllRooms();
+	public void updateAllRooms(String body);
 }

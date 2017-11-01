@@ -42,6 +42,11 @@ public class BookingRest {
 		return json.toResponseMessage(ResponseCode.ERROR_CODE_DENIED, "BOOKING FAILED");		
 	}
 	
+	@RequestMapping(value = "/getAllBooking", method = RequestMethod.GET)
+	public String getAllBooking() {		
+		return bookingService.getAllBooking();		
+	}
+	
 	private Booking createBooking(MultiValueMap<String, String> params){
 		Booking booking = new Booking();
 		System.out.println("Adult: " + params.getFirst("adult"));

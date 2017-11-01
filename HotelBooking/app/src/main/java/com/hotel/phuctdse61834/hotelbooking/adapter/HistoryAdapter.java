@@ -12,9 +12,6 @@ import com.hotel.phuctdse61834.hotelbooking.R;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by johntran on 10/18/17.
- */
 
 public class HistoryAdapter extends BaseAdapter {
     private Context mContext;

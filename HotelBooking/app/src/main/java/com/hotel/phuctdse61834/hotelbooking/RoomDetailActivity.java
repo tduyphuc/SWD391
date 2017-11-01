@@ -1,6 +1,5 @@
 package com.hotel.phuctdse61834.hotelbooking;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;

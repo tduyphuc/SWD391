@@ -1,7 +1,10 @@
 package phuc.controller.service.booking;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -100,7 +103,12 @@ public class BookingService implements IBooking {
 	private Payment createPayment(Booking booking, MultiValueMap<String, String> params, Map<Integer, Integer> details){
 		Payment payment = new Payment();
 		Date payTime = dateHelper.getCurrentDayToSecond();
-		Double amount = roomInfo.getTotalPrice(details);
+		long gap = booking.getCheckOutDay().getTime() - booking.getArrivalDay().getTime();
+		long oneDayGap = 1000 * 3600 * 24;
+		if(gap < 0){
+			gap = 0;
+		}
+		Double amount = roomInfo.getTotalPrice(details) * (gap / oneDayGap);
 		PaymentType paymentType = typeRepo.getPaymentType(Integer.valueOf(params.getFirst("paymentType")));
 		
 		payment.setTblBooking(booking);
@@ -150,7 +158,7 @@ public class BookingService implements IBooking {
 				RoomType type = roomRepo.getRoomType(entry.getKey());
 				capacity += entry.getValue() * type.getCapacity();
 			}
-			return adult <= capacity && child <= 2 * capacity;
+			return adult <= capacity && child <= 2 * (capacity - adult) + adult;
 		}
 		return false;
 	}
@@ -162,6 +170,30 @@ public class BookingService implements IBooking {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String getAllBooking() {
+		Collection<Booking> list = bookingRepo.getAllBooking();
+		List<Map<String, String>> bookingList = new ArrayList<>();
+		for(Booking booking : list){
+			Map<String, String> map = new HashMap<>();
+			map.put("cusId", String.valueOf(booking.getTblCustomer().getCustomerId()));
+			map.put("adult", String.valueOf(booking.getAdult()));
+			map.put("child", String.valueOf(booking.getChild()));
+			map.put("comment", booking.getComment());
+			map.put("arrivalDay", dateHelper.formatDate(booking.getArrivalDay()));
+			map.put("checkOutDay", dateHelper.formatDate(booking.getCheckOutDay()));
+			map.put("bookingDay", dateHelper.formatDate(booking.getBookingDay()));
+			Map<String, String> details = new HashMap<>();
+			for(BookingDetails detail : booking.getTblBookingDetailses()){
+				details.put(detail.getTblRoomType().getName(), detail.getAmount() + "");
+			}
+			map.put("details", gson.toJson(details));
+			
+			bookingList.add(map);
+		}
+		return gson.toJson(bookingList);
 	}
 
 }

@@ -9,13 +9,10 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by johntran on 10/14/17.
- */
+
 
 public class Requester {
     private static final String SCHEME = "http";

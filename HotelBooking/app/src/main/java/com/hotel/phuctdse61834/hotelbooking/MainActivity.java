@@ -43,14 +43,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RoomViewActivity.class);
                 startActivity(intent);
-                  //new TestNet().execute();
-//                EditText txt_username = (EditText) findViewById(R.id.txt_username);
-//                EditText txt_password = (EditText) findViewById(R.id.txt_password);
-//
-//                String username = txt_username.getText().toString();
-//                String password = txt_password.getText().toString();
-//                Log.d("TEST", "Username: " + username + "_Pass: " + password);
-//                testLogin(username, password);
             }
         });
 
@@ -73,15 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-//            Map<String, String> map = new HashMap<>();
-//            map.put("id", "tdphuc");
-//            map.put("password", "123456");
-//            try {
-//                Map<String, String> response = requester.postReq(paths, map);
-//                Log.d("TEST", response.get("code") + "_"+ response.get("message"));
-//            } catch (IOException e) {
-//                Log.d("TEST", "IOException: " + e.getMessage());
-//            }
+
             return null;
         }
 

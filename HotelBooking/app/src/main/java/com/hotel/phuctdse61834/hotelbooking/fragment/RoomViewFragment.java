@@ -26,9 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by johntran on 10/17/17.
- */
 
 public class RoomViewFragment extends CustomFragment {
 

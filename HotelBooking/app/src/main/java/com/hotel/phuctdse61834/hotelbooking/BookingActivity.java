@@ -1,17 +1,16 @@
 package com.hotel.phuctdse61834.hotelbooking;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +39,9 @@ public class BookingActivity extends AppCompatActivity {
     private TextView txt_checkOut;
     private TextView txt_total_price;
     private TextView txt_comment;
-    private Spinner spinner_adult;
-    private Spinner spinner_child;
-    private Spinner spinner_amount;
+    private TextView txt_adult;
+    private TextView txt_child;
+    private TextView txt_amount;
     private SimpleDateFormat sdf;
     private List<String> errors;
     private Double pricePerNight;
@@ -72,6 +71,7 @@ public class BookingActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 txt_arrival.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                setPriceTag();
             }
         };
         txt_arrival.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +93,7 @@ public class BookingActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 txt_checkOut.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                setPriceTag();
             }
         };
         txt_checkOut.setOnClickListener(new View.OnClickListener() {
@@ -107,34 +108,72 @@ public class BookingActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 12; i++){
-            list.add(i);
+        final String[] amount_items = new String[12];
+        for (int i = 0; i < amount_items.length; i++){
+            amount_items[i] = String.valueOf(i);
         }
-        spinner_adult = (Spinner) findViewById(R.id.spinner_person);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_adult.setAdapter(adapter);
 
-        spinner_child = (Spinner) findViewById(R.id.spinner_child);
-        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, list);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_child.setAdapter(adapter2);
-
-        spinner_amount = (Spinner) findViewById(R.id.spinner_amount);
-        ArrayAdapter<Integer> amount_adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, list);
-        amount_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_amount.setAdapter(amount_adapter);
-        spinner_amount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        txt_adult = (TextView) findViewById(R.id.txt_adult);
+        txt_adult.setText(amount_items[0]);
+        txt_adult.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Integer select_amount = Integer.valueOf(parent.getSelectedItem().toString());
-                txt_total_price.setText("$" + (select_amount * pricePerNight));
+            public void onClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(BookingActivity.this);
+                b.setTitle("Adult amount");
+                b.setItems(amount_items, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        txt_adult.setText(String.valueOf(which));
+                    }
+
+                });
+
+                b.show();
             }
+        });
 
+        txt_child = (TextView) findViewById(R.id.txt_child);
+        txt_child.setText(amount_items[0]);
+        txt_child.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(BookingActivity.this);
+                b.setTitle("Child amount");
+                b.setItems(amount_items, new DialogInterface.OnClickListener() {
 
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        txt_child.setText(String.valueOf(which));
+                    }
+
+                });
+
+                b.show();
+            }
+        });
+
+        txt_amount = (TextView) findViewById(R.id.txt_amount);
+        txt_amount.setText(amount_items[0]);
+        txt_amount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(BookingActivity.this);
+                b.setTitle("Room amount");
+                b.setItems(amount_items, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        txt_amount.setText(String.valueOf(which));
+                        setPriceTag();
+                    }
+
+                });
+
+                b.show();
             }
         });
 
@@ -151,6 +190,23 @@ public class BookingActivity extends AppCompatActivity {
                 }
             }
         });
+        setPriceTag();
+    }
+
+    private void setPriceTag(){
+        Integer select_amount = Integer.valueOf(txt_amount.getText().toString());
+        try{
+            Date arrival = sdf.parse(txt_arrival.getText().toString());
+            Date checkOut = sdf.parse(txt_checkOut.getText().toString());
+            long gap = checkOut.getTime() - arrival.getTime();
+            long oneDayGap = 1000 * 3600 * 24;
+            if(gap < 0){
+                gap = 0;
+            }
+            txt_total_price.setText("$" + (select_amount * pricePerNight * (gap / oneDayGap)));
+        }catch (ParseException e){
+            Log.d("BookingActivity", "ParseException: " + e.getMessage());
+        }
     }
 
     private void pay(){
@@ -162,13 +218,12 @@ public class BookingActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
         String username = preferences.getString("Name", "");
         params.put("cusId", username);
-        params.put("adult", spinner_adult.getSelectedItem().toString());
-        params.put("child", spinner_child.getSelectedItem().toString());
+        params.put("adult", txt_adult.getText().toString());
+        params.put("child", txt_child.getText().toString());
         params.put("arrivalDay", txt_arrival.getText().toString());
         params.put("checkOutDay", txt_checkOut.getText().toString());
         params.put("comment", txt_comment.getText().toString());
-        String details = "{\"" + mapData.get("typeId") + "\":\"" + spinner_amount.getSelectedItem().toString() + "\"}";
-        Log.d("BookingActivity", "createBookingParams: " + details);
+        String details = "{\"" + mapData.get("typeId") + "\":\"" + txt_amount.getText().toString() + "\"}";
         params.put("details", details);
         params.put("paymentType", "1");
         return params;
@@ -203,10 +258,11 @@ public class BookingActivity extends AppCompatActivity {
         Integer available = Integer.valueOf(mapData.get("available"));
 
         // validate capacity
-        Integer numberOfAdult = Integer.valueOf(spinner_adult.getSelectedItem().toString());
-        Integer numberOfChild = Integer.valueOf(spinner_child.getSelectedItem().toString());
-        Integer amountRoom = Integer.valueOf(spinner_amount.getSelectedItem().toString());
+        Integer numberOfAdult = Integer.valueOf(txt_adult.getText().toString());
+        Integer numberOfChild = Integer.valueOf(txt_child.getText().toString());
+        Integer amountRoom = Integer.valueOf(txt_amount.getText().toString());
         Integer capacity = Integer.valueOf(mapData.get("capacity"));
+        Integer totalCapacity = amountRoom * capacity;
 
         if(amountRoom < 1){
             errors.add("Please book at least one room");
@@ -220,7 +276,8 @@ public class BookingActivity extends AppCompatActivity {
             errors.add("At least 1 adult");
             return false;
         }
-        if((numberOfAdult > amountRoom * capacity) || numberOfChild > 2 * amountRoom * capacity){
+        if((numberOfAdult > totalCapacity)
+                || numberOfChild > 2 * (totalCapacity - numberOfAdult) + numberOfAdult){
             errors.add("Not enough capacity");
             return false;
         }
@@ -272,9 +329,6 @@ public class BookingActivity extends AppCompatActivity {
             if(result){
                 Toast.makeText(BookingActivity.this , "OK", Toast.LENGTH_SHORT).show();
                 finish();
-                //
-                //
-                //
             }
         }
 
