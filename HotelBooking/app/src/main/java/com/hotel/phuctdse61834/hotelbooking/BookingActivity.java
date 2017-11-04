@@ -35,6 +35,7 @@ public class BookingActivity extends AppCompatActivity {
     private Map<String, String> mapData;
     private DatePickerDialog.OnDateSetListener arrival_listener;
     private DatePickerDialog.OnDateSetListener checkOut_listener;
+    private TextView txt_roomType;
     private TextView txt_arrival;
     private TextView txt_checkOut;
     private TextView txt_total_price;
@@ -190,6 +191,8 @@ public class BookingActivity extends AppCompatActivity {
                 }
             }
         });
+        txt_roomType = (TextView) findViewById(R.id.txt_roomType);
+        txt_roomType.setText(mapData.get("name"));
         setPriceTag();
     }
 

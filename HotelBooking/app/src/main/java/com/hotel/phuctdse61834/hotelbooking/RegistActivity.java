@@ -45,7 +45,7 @@ public class RegistActivity extends AppCompatActivity {
     private String[] countries;
 
     private static final String USER_NAME_PATTERN = "[a-zA-Z0-9]{1,20}";
-    private static final String NAME_PATTERN = "[a-zA-Z0-9]{1,20}";
+    private static final String NAME_PATTERN = "[a-zA-Z]{1,20}";
     private static final String POSTAL_PATTERN = "[0-9]{5,6}";
 
     @Override
@@ -192,13 +192,13 @@ public class RegistActivity extends AppCompatActivity {
     private boolean checkPattern(){
         boolean valid = true;
 
-        String username = txt_username.getText().toString();
-        String password = txt_password.getText().toString();
-        String phone = txt_phone.getText().toString();
-        String firstName = txt_firstName.getText().toString();
-        String lastName = txt_lastName.getText().toString();
-        String email = txt_email.getText().toString();
-        String postal = txt_postal.getText().toString();
+        String username = txt_username.getText().toString().trim();
+        String password = txt_password.getText().toString().trim();
+        String phone = txt_phone.getText().toString().trim();
+        String firstName = txt_firstName.getText().toString().trim();
+        String lastName = txt_lastName.getText().toString().trim();
+        String email = txt_email.getText().toString().trim();
+        String postal = txt_postal.getText().toString().trim();
 
         if(!username.matches(USER_NAME_PATTERN)){
             valid = false;

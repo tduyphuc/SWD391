@@ -24,7 +24,7 @@ import utils.IJSonHelper;
 import utils.JSonHelper;
 
 @Configuration
-@ComponentScan(basePackages = {"service", "repo", "utils"})
+@ComponentScan(basePackages = {"model.service", "model.repo", "utils"})
 @EnableTransactionManagement
 public class AppConfig {
 	
@@ -43,7 +43,7 @@ public class AppConfig {
 	    LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 	    entityManagerFactory.setDataSource(dataSource);
 	    entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
-	    entityManagerFactory.setPackagesToScan("entity");    
+	    entityManagerFactory.setPackagesToScan("model.entity");    
 	    entityManagerFactory.setJpaPropertyMap(hibernateJpaProperties());
 	    return entityManagerFactory;
 	 }

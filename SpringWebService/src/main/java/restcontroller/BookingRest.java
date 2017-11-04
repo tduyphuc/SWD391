@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import entity.Booking;
-import service.booking.IBooking;
+import model.entity.Booking;
+import model.service.booking.IBooking;
 import utils.IDateHelper;
 import utils.IJSonHelper;
 import utils.ResponseCode;
