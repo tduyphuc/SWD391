@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.service.room.IRoomInfo;
+import service.room.IRoomInfo;
 import utils.IJSonHelper;
 import utils.ResponseCode;
 

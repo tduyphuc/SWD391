@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.entity.Customer;
-import model.service.user.IAuthenService;
-import model.service.user.IProfileService;
+import data.entity.Customer;
+import service.user.IAuthenService;
+import service.user.IProfileService;
 import utils.IJSonHelper;
 import utils.ResponseCode;
 
